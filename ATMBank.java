@@ -4,7 +4,7 @@
 //  
 //  Author:  Andrew Shepherd, 100153343
 // 
-//  COMP 2663 - Project - Winter 2019
+//  Copyright (c) April 2019
 //
 //  GUI application to set up bank customers and allow transactions.  
 //
@@ -21,19 +21,28 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.paint.Color;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javafx.stage.*;
 
 public class ATMBank extends Application
 {
    private Text menuTitle;
-   public Double balance = 0.00;
-   public static Double currentBalance = 5.67;
+   public static String[] accountFNames = new String[100];
+   public static String[] accountLNames = new String[100];
+   public static Double[] accountTotals = new Double[100];
+   public static int accountNumber = 1001;
    
    //------------------------------------------------------------------------
    //  Presents a GUI containing a menu with basic bank transactions
    //------------------------------------------------------------------------
    public void start(Stage primaryStage)
    {
+      //---------------------------------------------------------------------
+      //  Setting up Bank Owner as first account holder
+      //---------------------------------------------------------------------
+      accountFNames[0] = "Bank";
+      accountLNames[0] = "Owner";
+      accountTotals[0] = 1234567.89;
+     
       Font font2 = new Font("Courier", 24);
       
       menuTitle = new Text("ATM Bank - Main Menu");
@@ -46,9 +55,9 @@ public class ATMBank extends Application
       createAccount.setOnAction(this::goToCreateAccount);
       createAccount.setFont(font2);
       
-      Button withdrawl = new Button("Withdrawl");
-      withdrawl.setOnAction(this::goToWithdrawl);
-      withdrawl.setFont(font2);
+      Button withdrawal = new Button("Withdrawal");
+      withdrawal.setOnAction(this::goToWithdrawal);
+      withdrawal.setFont(font2);
       
       Button deposit = new Button("Deposit");
       deposit.setOnAction(this::goToDeposit);
@@ -58,16 +67,22 @@ public class ATMBank extends Application
       accountBalance.setOnAction(this::goToAccountBalance);
       accountBalance.setFont(font2);
       
-      Button accountHistory = new Button("Account History");
-      accountHistory.setOnAction(this::goToAccountHistory);
-      accountHistory.setFont(font2);
+      Button transfer = new Button("Transfer");
+      transfer.setOnAction(this::goToTransfer);
+      transfer.setFont(font2);
       
-      VBox pane = new VBox(menuTitle, sep, createAccount, withdrawl, deposit, accountBalance, accountHistory);
+      Separator sep2 = new Separator();
+      
+      Button help = new Button("Help");
+      help.setOnAction(this::goToHelp);
+      help.setFont(font2);
+      
+      VBox pane = new VBox(menuTitle, sep, createAccount, withdrawal, deposit, accountBalance, transfer, sep2, help);
       pane.setAlignment(Pos.CENTER);
-      pane.setSpacing(40);
+      pane.setSpacing(25);
       pane.setStyle("-fx-background-color: lightsteelblue");
       
-      Scene scene = new Scene(pane, 800, 700);
+      Scene scene = new Scene(pane, 800, 650);
       
       primaryStage.setTitle("ATM Bank - Main Menu");
       primaryStage.setScene(scene);
@@ -84,12 +99,12 @@ public class ATMBank extends Application
    }
    
    //------------------------------------------------------------------------
-   //  Launches the Withdrawl GUI Class
+   //  Launches the Withdrawal GUI Class
    //------------------------------------------------------------------------
-   public void goToWithdrawl (ActionEvent event)
+   public void goToWithdrawal (ActionEvent event)
    {
-      Withdrawl withdrawlGUI = new Withdrawl();
-      withdrawlGUI.start();   
+      Withdrawal withdrawalGUI = new Withdrawal();
+      withdrawalGUI.start();   
    }
    
    //------------------------------------------------------------------------
@@ -98,7 +113,7 @@ public class ATMBank extends Application
    public void goToDeposit (ActionEvent event)
    {
       Deposit depositGUI = new Deposit();
-      depositGUI.start(balance);
+      depositGUI.start();
    }
    
    //------------------------------------------------------------------------
@@ -107,16 +122,25 @@ public class ATMBank extends Application
    public void goToAccountBalance (ActionEvent event)
    {
       AccountBalance accountBalanceGUI = new AccountBalance();
-      accountBalanceGUI.start(currentBalance);   
+      accountBalanceGUI.start();   
    }
    
    //------------------------------------------------------------------------
-   //  Launches the Account History GUI Class
+   //  Launches the Transfer GUI Class
    //------------------------------------------------------------------------
-   public void goToAccountHistory (ActionEvent event)
+   public void goToTransfer (ActionEvent event)
    {
-      AccountHistory accountHistoryGUI = new AccountHistory();
-      accountHistoryGUI.start();   
+      Transfer transferGUI = new Transfer();
+      transferGUI.start();   
+   }
+   
+   //------------------------------------------------------------------------
+   //  Launches the Help GUI Class
+   //------------------------------------------------------------------------
+   public void goToHelp (ActionEvent event)
+   {
+      Help helpGUI = new Help();
+      helpGUI.start();   
    }
    
    //-----------------------------------------------------------------
